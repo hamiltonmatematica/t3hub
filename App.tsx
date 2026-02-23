@@ -66,11 +66,6 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden text-gold" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? <X /> : <Menu />}
-        </button>
-
-        {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden bg-black border-b border-gold/20 absolute top-full left-0 right-0 p-6 flex flex-col gap-6 animate-fadeIn">
             {navLinks.map(link => (
