@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import { 
-  ArrowRight, 
-  Users, 
-  Target, 
-  MapPin, 
-  ShieldCheck, 
-  TrendingUp, 
-  Compass, 
+import {
+  ArrowRight,
+  Users,
+  Target,
+  MapPin,
+  ShieldCheck,
+  TrendingUp,
+  Compass,
   Briefcase,
   CheckCircle2,
   Menu,
@@ -54,34 +54,27 @@ const Navbar = () => {
           <div className="w-8 h-8 bg-gold rounded-sm flex items-center justify-center font-bold text-black text-xl">T3</div>
           <span className="text-2xl font-black tracking-tighter gold-text-gradient">HUB</span>
         </div>
-        
+
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map(link => (
-            <a key={link.name} href={link.href} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-widest">{link.name}</a>
-          ))}
-          <a href="#candidatura" className="bg-gold text-black px-6 py-2 rounded-sm font-bold text-sm uppercase tracking-wider hover:bg-white transition-all transform hover:scale-105">
-            Candidatar-se
-          </a>
+
+          {/* Mobile Toggle */}
+          <button className="md:hidden text-gold" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X /> : <Menu />}
+          </button>
         </div>
 
-        {/* Mobile Toggle */}
-        <button className="md:hidden text-gold" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? <X /> : <Menu />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-black border-b border-gold/20 absolute top-full left-0 right-0 p-6 flex flex-col gap-6 animate-fadeIn">
-          {navLinks.map(link => (
-            <a key={link.name} href={link.href} onClick={() => setMobileMenuOpen(false)} className="text-lg font-medium hover:text-gold uppercase tracking-widest">{link.name}</a>
-          ))}
-          <a href="#candidatura" onClick={() => setMobileMenuOpen(false)} className="bg-gold text-black px-6 py-3 rounded-sm font-bold text-center uppercase tracking-wider">
-            Solicitar Participação
-          </a>
-        </div>
-      )}
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-black border-b border-gold/20 absolute top-full left-0 right-0 p-6 flex flex-col gap-6 animate-fadeIn">
+            {navLinks.map(link => (
+              <a key={link.name} href={link.href} onClick={() => setMobileMenuOpen(false)} className="text-lg font-medium hover:text-gold uppercase tracking-widest">{link.name}</a>
+            ))}
+            <a href="#candidatura" onClick={() => setMobileMenuOpen(false)} className="bg-gold text-black px-6 py-3 rounded-sm font-bold text-center uppercase tracking-wider">
+              Quero ser membro
+            </a>
+          </div>
+        )}
     </nav>
   );
 };
@@ -112,15 +105,38 @@ export default function App() {
   const [formData, setFormData] = useState<FormData>({
     nome: '', empresa: '', segmento: '', faturamento: '', colaboradores: '', cidade: '', social: '', motivo: '', desafios: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Candidatura enviada com sucesso! Nossa equipe entrará em contato em breve.');
-    console.log(formData);
+    setIsSubmitting(true);
+
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6kQLYyw57v_GpMiNqyyx0MfaNgJqB1RqKeSmNSioysoiEoE4lF5CSrNPjmsiVGtxH/exec';
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      alert('Candidatura enviada com sucesso! Nossa equipe entrará em contato em breve.');
+      setFormData({
+        nome: '', empresa: '', segmento: '', faturamento: '', colaboradores: '', cidade: '', social: '', motivo: '', desafios: ''
+      });
+    } catch (error) {
+      console.error('Erro ao enviar:', error);
+      alert('Erro ao enviar candidatura. Por favor, tente novamente ou entre em contato diretamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -134,7 +150,7 @@ export default function App() {
           <div className="absolute top-1/4 -left-20 w-96 h-96 bg-gold/20 rounded-full blur-[120px]"></div>
           <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-gold/10 rounded-full blur-[120px]"></div>
         </div>
-        
+
         <div className="container mx-auto px-6 relative z-10 text-center">
           <div className="inline-block px-4 py-1 border border-gold/40 rounded-full text-gold text-xs uppercase tracking-[0.3em] font-bold mb-8 animate-pulse">
             Comunidade Estruturada
@@ -144,12 +160,12 @@ export default function App() {
             <span className="gold-text-gradient">está jogando?</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-12 font-medium leading-relaxed">
-            O campeonato que você escolhe disputar determina a grandeza do seu team. 
+            O campeonato que você escolhe disputar determina a grandeza do seu team.
             O T3 Hub é a comunidade de empresários do Norte de Minas que decidiram elevar o nível do jogo.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="#candidatura" className="bg-gold text-black px-10 py-5 rounded-sm font-black text-lg uppercase tracking-widest hover:bg-white transition-all transform hover:scale-105 flex items-center justify-center gap-3">
-              Solicitar Participação <ArrowRight size={20} />
+              Quero ser membro <ArrowRight size={20} />
             </a>
             <a href="#o-que-e" className="border border-gold text-gold px-10 py-5 rounded-sm font-black text-lg uppercase tracking-widest hover:bg-gold hover:text-black transition-all flex items-center justify-center">
               Descobrir o HUB
@@ -176,7 +192,7 @@ export default function App() {
               <div className="space-y-6 text-gray-400 text-lg leading-relaxed">
                 <p>Empresas crescem quando o ambiente evolui.</p>
                 <p>
-                  Depois de anos conectando negócios, participando de grandes centros e acompanhando 
+                  Depois de anos conectando negócios, participando de grandes centros e acompanhando
                   a evolução de centenas de empresas, uma conclusão ficou clara:
                 </p>
                 <div className="grid grid-cols-1 gap-4 py-4">
@@ -194,15 +210,15 @@ export default function App() {
             </div>
             <div className="relative">
               <div className="aspect-square bg-gold/10 border border-gold/20 rounded-2xl overflow-hidden flex items-center justify-center">
-                 <img 
-                    src="https://picsum.photos/seed/t3hub/800/800" 
-                    alt="Ambiente Empresarial" 
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 opacity-60"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-                  <div className="absolute bottom-8 left-8 right-8">
-                    <p className="text-gold font-bold text-2xl uppercase italic">Direção define resultado.</p>
-                  </div>
+                <img
+                  src="https://picsum.photos/seed/t3hub/800/800"
+                  alt="Ambiente Empresarial"
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 opacity-60"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+                <div className="absolute bottom-8 left-8 right-8">
+                  <p className="text-gold font-bold text-2xl uppercase italic">Direção define resultado.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -234,7 +250,7 @@ export default function App() {
               <div>
                 <h3 className="text-2xl font-black uppercase mb-6 italic">Espaço Estratégico</h3>
                 <p className="text-gray-300 text-lg mb-8">
-                  Com critérios claros de participação, criamos um filtro que protege o nível intelectual 
+                  Com critérios claros de participação, criamos um filtro que protege o nível intelectual
                   e relacional do grupo. Aqui, o topo não é solitário.
                 </p>
                 <div className="flex gap-10">
@@ -268,36 +284,36 @@ export default function App() {
           <SectionTitle centered subtitle="Imagine um ambiente onde você tivesse as ferramentas certas para cada etapa da jornada.">
             OS PILARES DO T3 HUB
           </SectionTitle>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <PillarCard 
-              icon={TrendingUp} 
-              title="Curadoria de Alto Nível" 
-              description="Aprendizado com quem executa." 
+            <PillarCard
+              icon={TrendingUp}
+              title="Curadoria de Alto Nível"
+              description="Aprendizado com quem executa."
               details="Conteúdo de grandes centros aplicado diretamente à realidade regional, sem teorias vazias."
             />
-            <PillarCard 
-              icon={ShieldCheck} 
-              title="Grupo Fechado e Seletivo" 
-              description="Participação limitada por segmento." 
+            <PillarCard
+              icon={ShieldCheck}
+              title="Grupo Fechado e Seletivo"
+              description="Participação limitada por segmento."
               details="Ambiente seguro para compartilhar dados e estratégias, livre de concorrência predatória."
             />
-            <PillarCard 
-              icon={Compass} 
-              title="Missões Empresariais" 
-              description="Imersões estratégicas." 
+            <PillarCard
+              icon={Compass}
+              title="Missões Empresariais"
+              description="Imersões estratégicas."
               details="Experiências nacionais e internacionais que ampliam a visão e o posicionamento do seu negócio."
             />
-            <PillarCard 
-              icon={Users} 
-              title="Crescimento em Equipe" 
-              description="Capacitação para gestores." 
+            <PillarCard
+              icon={Users}
+              title="Crescimento em Equipe"
+              description="Capacitação para gestores."
               details="Alinhamento real entre a visão da liderança e a execução dos seus colaboradores."
             />
-            <PillarCard 
-              icon={Briefcase} 
-              title="Consultoria de Suporte" 
-              description="Do aprendizado à prática." 
+            <PillarCard
+              icon={Briefcase}
+              title="Consultoria de Suporte"
+              description="Do aprendizado à prática."
               details="Acompanhamento próximo para garantir que o conhecimento se transforme em ação e lucro."
             />
             <div className="bg-gold p-8 rounded-lg flex flex-col justify-between items-start">
@@ -332,10 +348,10 @@ export default function App() {
       <section id="para-quem" className="py-24 bg-white/5">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
-             <div>
-              <img 
-                src="https://picsum.photos/seed/executive/600/800" 
-                alt="Líder T3" 
+            <div>
+              <img
+                src="https://picsum.photos/seed/executive/600/800"
+                alt="Líder T3"
                 className="rounded-lg shadow-2xl border border-white/10"
               />
             </div>
@@ -367,7 +383,7 @@ export default function App() {
         <div className="container mx-auto px-6">
           <SectionTitle centered>Processo Seletivo</SectionTitle>
           <p className="text-center text-gray-400 max-w-3xl mx-auto mb-16 text-lg">
-            Participação mediante candidatura. O T3 Hub mantém critérios rígidos para preservar o ecossistema. 
+            Participação mediante candidatura. O T3 Hub mantém critérios rígidos para preservar o ecossistema.
             <span className="block mt-4 text-gold font-bold italic">Nem todos os interessados são aprovados.</span>
           </p>
 
@@ -410,24 +426,24 @@ export default function App() {
               <div className="p-12">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input 
+                    <input
                       type="text" name="nome" placeholder="Nome Completo" required
                       className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all"
                       value={formData.nome} onChange={handleInputChange}
                     />
-                    <input 
+                    <input
                       type="text" name="empresa" placeholder="Sua Empresa" required
                       className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all"
                       value={formData.empresa} onChange={handleInputChange}
                     />
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input 
+                    <input
                       type="text" name="segmento" placeholder="Segmento" required
                       className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all"
                       value={formData.segmento} onChange={handleInputChange}
                     />
-                    <select 
+                    <select
                       name="faturamento" required
                       className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all text-gray-400"
                       value={formData.faturamento} onChange={handleInputChange}
@@ -440,29 +456,33 @@ export default function App() {
                     </select>
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input 
+                    <input
                       type="text" name="cidade" placeholder="Cidade / Estado" required
                       className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all"
                       value={formData.cidade} onChange={handleInputChange}
                     />
-                    <input 
+                    <input
                       type="text" name="social" placeholder="Instagram ou Site"
                       className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all"
                       value={formData.social} onChange={handleInputChange}
                     />
                   </div>
-                  <textarea 
+                  <textarea
                     name="motivo" placeholder="Por que deseja participar do T3 Hub?" rows={3}
                     className="bg-transparent border border-white/10 p-4 rounded focus:border-gold outline-none w-full transition-all"
                     value={formData.motivo} onChange={handleInputChange}
                   />
-                  <textarea 
+                  <textarea
                     name="desafios" placeholder="Quais são seus principais desafios hoje?" rows={3}
                     className="bg-transparent border border-white/10 p-4 rounded focus:border-gold outline-none w-full transition-all"
                     value={formData.desafios} onChange={handleInputChange}
                   />
-                  <button type="submit" className="w-full bg-gold text-black py-5 font-black uppercase tracking-widest hover:bg-white transition-all transform hover:scale-[1.02]">
-                    Preencher Candidatura
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-gold text-black py-5 font-black uppercase tracking-widest hover:bg-white transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? 'Enviando...' : 'Preencher Candidatura'}
                   </button>
                   <p className="text-[10px] text-gray-500 text-center uppercase tracking-widest">
                     Seus dados estão protegidos por criptografia e serão usados apenas para a triagem.
