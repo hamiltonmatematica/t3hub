@@ -57,12 +57,18 @@ const Navbar = () => {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8">
-
-          {/* Mobile Toggle */}
-          <button className="md:hidden text-gold" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X /> : <Menu />}
-          </button>
+          {navLinks.map(link => (
+            <a key={link.name} href={link.href} className="text-lg font-medium hover:text-gold uppercase tracking-widest">{link.name}</a>
+          ))}
+          <a href="#candidatura" className="bg-gold text-black px-6 py-3 rounded-sm font-bold uppercase tracking-wider hover:bg-white transition-all">
+            Quero ser membro
+          </a>
         </div>
+
+        {/* Mobile Toggle */}
+        <button className="md:hidden text-gold" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          {mobileMenuOpen ? <X /> : <Menu />}
+        </button>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
