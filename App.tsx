@@ -65,17 +65,25 @@ const Navbar = () => {
           </a>
         </div>
 
-        {/* Mobile Toggle */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-black border-b border-gold/20 absolute top-full left-0 right-0 p-6 flex flex-col gap-6 animate-fadeIn">
-            {navLinks.map(link => (
-              <a key={link.name} href={link.href} onClick={() => setMobileMenuOpen(false)} className="text-lg font-medium hover:text-gold uppercase tracking-widest">{link.name}</a>
-            ))}
-            <a href="#candidatura" onClick={() => setMobileMenuOpen(false)} className="bg-gold text-black px-6 py-3 rounded-sm font-bold text-center uppercase tracking-wider">
-              Quero ser membro
-            </a>
-          </div>
-        )}
+        {/* Mobile Toggle Button */}
+        <div className="md:hidden">
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-white focus:outline-none">
+            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-black border-b border-gold/20 absolute top-full left-0 right-0 p-6 flex flex-col gap-6 animate-fadeIn">
+          {navLinks.map(link => (
+            <a key={link.name} href={link.href} onClick={() => setMobileMenuOpen(false)} className="text-lg font-medium hover:text-gold uppercase tracking-widest">{link.name}</a>
+          ))}
+          <a href="#candidatura" onClick={() => setMobileMenuOpen(false)} className="bg-gold text-black px-6 py-3 rounded-sm font-bold text-center uppercase tracking-wider">
+            Quero ser membro
+          </a>
+        </div>
+      )}
     </nav>
   );
 };
@@ -83,7 +91,7 @@ const Navbar = () => {
 // Fix: Changed children to be optional in SectionTitle to satisfy TypeScript's JSX requirements across all usages
 const SectionTitle = ({ children, subtitle, centered = false }: { children?: React.ReactNode, subtitle?: string, centered?: boolean }) => (
   <div className={`mb-12 ${centered ? 'text-center' : ''}`}>
-    <h2 className="text-3xl md:text-5xl title-caps mb-4 leading-tight">{children}</h2>
+    <h2 className="text-3xl md::text-5xl title-caps mb-4 leading-tight">{children}</h2>
     {subtitle && <p className="text-gold/80 text-lg max-w-2xl mx-auto">{subtitle}</p>}
     <div className={`h-1 w-20 bg-gold mt-4 ${centered ? 'mx-auto' : ''}`}></div>
   </div>
