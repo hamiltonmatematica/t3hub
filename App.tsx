@@ -21,7 +21,6 @@ interface FormData {
   empresa: string;
   segmento: string;
   faturamento: string;
-  colaboradores: string;
   cidade: string;
   social: string;
   motivo: string;
@@ -50,9 +49,8 @@ const Navbar = () => {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-black/90 backdrop-blur-md py-4 border-b border-gold/20' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gold rounded-sm flex items-center justify-center font-bold text-black text-xl">T3</div>
-          <span className="text-2xl font-black tracking-tighter gold-text-gradient">HUB</span>
+        <div className="flex items-center">
+          <img src="/Logo t3 hub.png" alt="T3 HUB" className="h-10 w-auto object-contain" />
         </div>
 
         {/* Desktop Links */}
@@ -97,14 +95,21 @@ const SectionTitle = ({ children, subtitle, centered = false }: { children?: Rea
   </div>
 );
 
-const PillarCard = ({ icon: Icon, title, description, details }: { icon: any, title: string, description: string, details: string }) => (
-  <div className="bg-grayDark/50 border border-gold/10 p-8 rounded-lg hover:border-gold/40 transition-all group">
-    <div className="mb-6 p-4 bg-gold/10 rounded-full w-fit group-hover:bg-gold group-hover:text-black transition-all">
-      <Icon size={32} />
+const PillarCard = ({ icon: Icon, title, description, details, image }: { icon: any, title: string, description: string, details: string, image?: string }) => (
+  <div className="bg-grayDark/50 border border-gold/10 rounded-lg hover:border-gold/40 transition-all group overflow-hidden flex flex-col h-full">
+    {image && (
+      <div className="h-48 w-full overflow-hidden shrink-0">
+        <img src={image} alt={title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-transform duration-700 opacity-60 group-hover:opacity-100 group-hover:scale-110" />
+      </div>
+    )}
+    <div className="p-8 flex-1 flex flex-col">
+      <div className="mb-6 p-4 bg-gold/10 rounded-full w-fit group-hover:bg-gold group-hover:text-black transition-all">
+        <Icon size={32} />
+      </div>
+      <h3 className="text-xl font-bold uppercase mb-2 tracking-tight">{title}</h3>
+      <p className="text-gold font-medium mb-4">{description}</p>
+      <p className="text-white text-sm leading-relaxed flex-1">{details}</p>
     </div>
-    <h3 className="text-xl font-bold uppercase mb-2 tracking-tight">{title}</h3>
-    <p className="text-gold font-medium mb-4">{description}</p>
-    <p className="text-gray-400 text-sm leading-relaxed">{details}</p>
   </div>
 );
 
@@ -112,7 +117,7 @@ const PillarCard = ({ icon: Icon, title, description, details }: { icon: any, ti
 
 export default function App() {
   const [formData, setFormData] = useState<FormData>({
-    nome: '', empresa: '', segmento: '', faturamento: '', colaboradores: '', cidade: '', social: '', motivo: '', desafios: ''
+    nome: '', empresa: '', segmento: '', faturamento: '', cidade: '', social: '', motivo: '', desafios: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -138,7 +143,7 @@ export default function App() {
 
       alert('Candidatura enviada com sucesso! Nossa equipe entrará em contato em breve.');
       setFormData({
-        nome: '', empresa: '', segmento: '', faturamento: '', colaboradores: '', cidade: '', social: '', motivo: '', desafios: ''
+        nome: '', empresa: '', segmento: '', faturamento: '', cidade: '', social: '', motivo: '', desafios: ''
       });
     } catch (error) {
       console.error('Erro ao enviar:', error);
@@ -168,7 +173,7 @@ export default function App() {
             Em qual liga sua empresa <br />
             <span className="gold-text-gradient">está jogando?</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-12 font-medium leading-relaxed">
+          <p className="text-lg md:text-xl text-white max-w-3xl mx-auto mb-12 font-medium leading-relaxed">
             O campeonato que você escolhe disputar determina a grandeza do seu team.
             O T3 Hub é a comunidade de empresários do Norte de Minas que decidiram elevar o nível do jogo.
           </p>
@@ -198,33 +203,32 @@ export default function App() {
                 O que muda o jogo não é o que você sabe. <br />
                 <span className="text-gold">É com quem você está.</span>
               </h2>
-              <div className="space-y-6 text-gray-400 text-lg leading-relaxed">
-                <p>Empresas crescem quando o ambiente evolui.</p>
-                <p>
-                  Depois de anos conectando negócios, participando de grandes centros e acompanhando
-                  a evolução de centenas de empresas, uma conclusão ficou clara:
+              <div className="space-y-6 text-white text-lg leading-relaxed">
+                <p className="font-normal">Empresas crescem quando o ambiente evolui.</p>
+                <p className="font-normal">
+                  As últimas tendências de mercado e os estudos dos maiores centros de negócios do mundo apontam para uma única direção: o crescimento estável é impulsionado por conexões estratégicas.
                 </p>
-                <div className="grid grid-cols-1 gap-4 py-4">
-                  <div className="flex items-center gap-4 bg-white/5 p-4 rounded border-l-4 border-gold">
-                    <Compass className="text-gold" />
-                    <span className="text-white font-bold uppercase tracking-wider">Ambiente define direção.</span>
+                <div className="grid grid-cols-2 gap-4 py-4">
+                  <div className="flex flex-col items-center justify-center gap-4 bg-white/5 aspect-square p-6 rounded border-t-4 border-gold text-center">
+                    <Compass className="text-gold" size={32} />
+                    <span className="text-white font-bold uppercase tracking-wider text-sm leading-tight">Ambiente <br /> define direção.</span>
                   </div>
-                  <div className="flex items-center gap-4 bg-white/5 p-4 rounded border-l-4 border-gold">
-                    <Target className="text-gold" />
-                    <span className="text-white font-bold uppercase tracking-wider">Direção define resultado.</span>
+                  <div className="flex flex-col items-center justify-center gap-4 bg-white/5 aspect-square p-6 rounded border-t-4 border-gold text-center">
+                    <Target className="text-gold" size={32} />
+                    <span className="text-white font-bold uppercase tracking-wider text-sm leading-tight">Direção <br /> define resultado.</span>
                   </div>
                 </div>
-                <p className="text-white font-medium italic">O T3 Hub nasceu para ser esse ambiente.</p>
+                <p className="text-white font-bold italic">O T3 Hub nasceu para ser esse ambiente de aceleração.</p>
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-square bg-gold/10 border border-gold/20 rounded-2xl overflow-hidden flex items-center justify-center">
-                <img
-                  src="https://picsum.photos/seed/t3hub/800/800"
-                  alt="Ambiente Empresarial"
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 opacity-60"
+              <div className="aspect-square bg-gold/5 border border-gold/20 rounded-2xl overflow-hidden flex items-center justify-center relative group">
+                <video
+                  src="https://cdn.pixabay.com/video/2019/11/12/29254-375525995_large.mp4"
+                  autoPlay loop muted playsInline
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-60"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                 <div className="absolute bottom-8 left-8 right-8">
                   <p className="text-gold font-bold text-2xl uppercase italic">Direção define resultado.</p>
                 </div>
@@ -248,17 +252,17 @@ export default function App() {
                 <div className="mt-1"><X className="text-red-500" size={24} /></div>
                 <div>
                   <h4 className="font-bold text-xl uppercase mb-2">{item.title}</h4>
-                  <p className="text-gray-400">{item.desc}</p>
+                  <p className="text-white">{item.desc}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="bg-gradient-to-r from-gold/20 to-transparent p-10 rounded-lg border border-gold/30">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="bg-gradient-to-r from-gold/20 to-transparent p-10 rounded-lg border border-gold/30 relative overflow-hidden">
+            <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
               <div>
                 <h3 className="text-2xl font-black uppercase mb-6 italic">Espaço Estratégico</h3>
-                <p className="text-gray-300 text-lg mb-8">
+                <p className="text-white text-lg mb-8">
                   Com critérios claros de participação, criamos um filtro que protege o nível intelectual
                   e relacional do grupo. Aqui, o topo não é solitário.
                 </p>
@@ -279,8 +283,13 @@ export default function App() {
                   </div>
                 </div>
               </div>
-              <div className="text-6xl md:text-8xl font-black opacity-10 uppercase tracking-tighter select-none">
-                Norte de Minas
+              <div className="relative w-full h-[400px] md:h-[500px] flex items-center justify-center group overflow-hidden bg-black/20 rounded-xl">
+                <img
+                  src="/Group 1261152934.png"
+                  alt="T3 Hub - Líderes do Interior"
+                  className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-all duration-700 p-4"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent pointer-events-none md:hidden"></div>
               </div>
             </div>
           </div>
@@ -300,30 +309,35 @@ export default function App() {
               title="Curadoria de Alto Nível"
               description="Aprendizado com quem executa."
               details="Conteúdo de grandes centros aplicado diretamente à realidade regional, sem teorias vazias."
+              image="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800"
             />
             <PillarCard
               icon={ShieldCheck}
               title="Grupo Fechado e Seletivo"
               description="Participação limitada por segmento."
               details="Ambiente seguro para compartilhar dados e estratégias, livre de concorrência predatória."
+              image="https://images.unsplash.com/photo-1556761175-5973dc0f32d7?auto=format&fit=crop&q=80&w=800"
             />
             <PillarCard
               icon={Compass}
               title="Missões Empresariais"
               description="Imersões estratégicas."
               details="Experiências nacionais e internacionais que ampliam a visão e o posicionamento do seu negócio."
+              image="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=800"
             />
             <PillarCard
               icon={Users}
               title="Crescimento em Equipe"
               description="Capacitação para gestores."
               details="Alinhamento real entre a visão da liderança e a execução dos seus colaboradores."
+              image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800"
             />
             <PillarCard
               icon={Briefcase}
               title="Consultoria de Suporte"
               description="Do aprendizado à prática."
               details="Acompanhamento próximo para garantir que o conhecimento se transforme em ação e lucro."
+              image="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800"
             />
             <div className="bg-gold p-8 rounded-lg flex flex-col justify-between items-start">
               <h3 className="text-black font-black text-2xl uppercase leading-tight">Pronto para elevar o nível?</h3>
@@ -340,12 +354,12 @@ export default function App() {
         <div className="container mx-auto px-6 text-center">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-6xl title-caps mb-8 italic">Não é sobre quantidade. <span className="text-gold">É sobre nível.</span></h2>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-12 mt-16">
-              <div className="p-8 border border-gold/20 rounded-full w-48 h-48 flex flex-col items-center justify-center">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-12 mt-16 mb-20">
+              <div className="p-8 border border-gold/20 rounded-full w-48 h-48 flex flex-col items-center justify-center shrink-0">
                 <span className="text-5xl font-black gold-text-gradient">80+</span>
                 <span className="text-xs uppercase tracking-tighter text-gold/60">Empresários</span>
               </div>
-              <p className="text-xl md:text-2xl text-gray-400 max-w-lg text-left border-l-2 border-gold pl-8">
+              <p className="text-xl md:text-2xl text-white max-w-lg text-left border-l-2 border-gold pl-8">
                 Empresas relevantes da região escolheram estar nesse ambiente. O movimento já começou e quem dita o ritmo são os realizadores.
               </p>
             </div>
@@ -391,7 +405,7 @@ export default function App() {
       <section id="processo" className="py-24">
         <div className="container mx-auto px-6">
           <SectionTitle centered>Processo Seletivo</SectionTitle>
-          <p className="text-center text-gray-400 max-w-3xl mx-auto mb-16 text-lg">
+          <p className="text-center text-white max-w-3xl mx-auto mb-16 text-lg">
             Participação mediante candidatura. O T3 Hub mantém critérios rígidos para preservar o ecossistema.
             <span className="block mt-4 text-gold font-bold italic">Nem todos os interessados são aprovados.</span>
           </p>
@@ -406,7 +420,7 @@ export default function App() {
               <div key={i} className="bg-grayDark p-8 border-b-4 border-gold group hover:bg-gold/5 transition-all">
                 <span className="text-gold font-black text-4xl mb-4 block opacity-40 group-hover:opacity-100">{p.step}</span>
                 <h4 className="text-xl font-bold uppercase mb-2">{p.title}</h4>
-                <p className="text-sm text-gray-500">{p.desc}</p>
+                <p className="text-sm text-white">{p.desc}</p>
               </div>
             ))}
           </div>
@@ -454,7 +468,7 @@ export default function App() {
                     />
                     <select
                       name="faturamento" required
-                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all text-gray-400"
+                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all text-white"
                       value={formData.faturamento} onChange={handleInputChange}
                     >
                       <option value="">Faturamento Anual</option>
@@ -493,7 +507,7 @@ export default function App() {
                   >
                     {isSubmitting ? 'Enviando...' : 'Preencher Candidatura'}
                   </button>
-                  <p className="text-[10px] text-gray-500 text-center uppercase tracking-widest">
+                  <p className="text-[10px] text-white text-center uppercase tracking-widest">
                     Seus dados estão protegidos por criptografia e serão usados apenas para a triagem.
                   </p>
                 </form>
@@ -506,11 +520,10 @@ export default function App() {
       {/* FOOTER */}
       <footer className="py-12 border-t border-white/5 bg-black">
         <div className="container mx-auto px-6 text-center">
-          <div className="flex items-center justify-center gap-2 mb-8">
-            <div className="w-6 h-6 bg-gold rounded-sm flex items-center justify-center font-bold text-black text-sm">T3</div>
-            <span className="text-xl font-black tracking-tighter gold-text-gradient">HUB</span>
+          <div className="flex items-center justify-center mb-8">
+            <img src="/Logo t3 hub.png" alt="T3 HUB" className="h-8 w-auto object-contain" />
           </div>
-          <p className="text-gray-500 text-sm mb-4">© 2024 T3 Hub. Todos os direitos reservados.</p>
+          <p className="text-white text-sm mb-4">© 2026 T3 Hub. Todos os direitos reservados.</p>
           <div className="flex justify-center gap-6">
             <a href="#" className="text-gold/60 hover:text-gold transition-colors text-xs uppercase tracking-widest">Política de Privacidade</a>
             <a href="#" className="text-gold/60 hover:text-gold transition-colors text-xs uppercase tracking-widest">Termos de Uso</a>
