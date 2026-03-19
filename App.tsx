@@ -99,7 +99,7 @@ const PillarCard = ({ icon: Icon, title, description, details, image }: { icon: 
   <div className="bg-grayDark/50 border border-gold/10 rounded-lg hover:border-gold/40 transition-all group overflow-hidden flex flex-col h-full">
     {image && (
       <div className="h-48 w-full overflow-hidden shrink-0">
-        <img src={image} alt={title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-transform duration-700 opacity-60 group-hover:opacity-100 group-hover:scale-110" />
+        <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
       </div>
     )}
     <div className="p-8 flex-1 flex flex-col">
@@ -226,7 +226,7 @@ export default function App() {
                 <video
                   src="https://cdn.pixabay.com/video/2019/11/12/29254-375525995_large.mp4"
                   autoPlay loop muted playsInline
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-60"
+                  className="w-full h-full object-cover transition-all duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                 <div className="absolute bottom-8 left-8 right-8">
@@ -309,35 +309,35 @@ export default function App() {
               title="Curadoria de Alto Nível"
               description="Aprendizado com quem executa."
               details="Conteúdo de grandes centros aplicado diretamente à realidade regional, sem teorias vazias."
-              image="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800"
+              image="/TAY-5815.jpg"
             />
             <PillarCard
               icon={ShieldCheck}
               title="Grupo Fechado e Seletivo"
               description="Participação limitada por segmento."
               details="Ambiente seguro para compartilhar dados e estratégias, livre de concorrência predatória."
-              image="https://images.unsplash.com/photo-1556761175-5973dc0f32d7?auto=format&fit=crop&q=80&w=800"
+              image="/TAY-5746.jpg"
             />
             <PillarCard
               icon={Compass}
               title="Missões Empresariais"
               description="Imersões estratégicas."
               details="Experiências nacionais e internacionais que ampliam a visão e o posicionamento do seu negócio."
-              image="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=800"
+              image="/DSC04598.jpg"
             />
             <PillarCard
               icon={Users}
               title="Crescimento em Equipe"
               description="Capacitação para gestores."
               details="Alinhamento real entre a visão da liderança e a execução dos seus colaboradores."
-              image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800"
+              image="/DSC08494.jpg"
             />
             <PillarCard
               icon={Briefcase}
               title="Consultoria de Suporte"
               description="Do aprendizado à prática."
               details="Acompanhamento próximo para garantir que o conhecimento se transforme em ação e lucro."
-              image="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800"
+              image="/DSC08778.jpg"
             />
             <div className="bg-gold p-8 rounded-lg flex flex-col justify-between items-start">
               <h3 className="text-black font-black text-2xl uppercase leading-tight">Pronto para elevar o nível?</h3>
@@ -373,9 +373,9 @@ export default function App() {
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
               <img
-                src="https://picsum.photos/seed/executive/600/800"
+                src="/TAY-5746.jpg"
                 alt="Líder T3"
-                className="rounded-lg shadow-2xl border border-white/10"
+                className="rounded-lg shadow-2xl border border-white/10 object-cover w-full h-full"
               />
             </div>
             <div>
