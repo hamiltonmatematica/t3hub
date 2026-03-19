@@ -158,7 +158,12 @@ export default function App() {
       <Navbar />
 
       {/* HERO SECTION */}
-      <header className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+      <header 
+        className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/DSC08494.jpg')" }}
+      >
+        {/* Overlay do background */}
+        <div className="absolute inset-0 bg-black/75 z-0"></div>
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 opacity-40">
           <div className="absolute top-1/4 -left-20 w-96 h-96 bg-gold/20 rounded-full blur-[120px]"></div>
@@ -323,14 +328,14 @@ export default function App() {
               title="Missões Empresariais"
               description="Imersões estratégicas."
               details="Experiências nacionais e internacionais que ampliam a visão e o posicionamento do seu negócio."
-              image="/DSC04598.jpg"
+              image="/PHOTO-2026-03-19-14-14-25.jpg"
             />
             <PillarCard
               icon={Users}
               title="Crescimento em Equipe"
               description="Capacitação para gestores."
               details="Alinhamento real entre a visão da liderança e a execução dos seus colaboradores."
-              image="/DSC08494.jpg"
+              image="/DSC04598.jpg"
             />
             <PillarCard
               icon={Briefcase}
