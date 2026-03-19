@@ -50,7 +50,7 @@ const Navbar = () => {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-black/90 backdrop-blur-md py-4 border-b border-gold/20' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center">
-          <img src="/Logo t3 hub.png" alt="T3 HUB" className="h-10 w-auto object-contain" />
+          <img src="/Logo t3 hub.png" alt="T3 HUB" className="h-16 md:h-20 w-auto object-contain transition-all" />
         </div>
 
         {/* Desktop Links */}
@@ -99,7 +99,7 @@ const PillarCard = ({ icon: Icon, title, description, details, image }: { icon: 
   <div className="bg-grayDark/50 border border-gold/10 rounded-lg hover:border-gold/40 transition-all group overflow-hidden flex flex-col h-full">
     {image && (
       <div className="h-48 w-full overflow-hidden shrink-0">
-        <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        <img src={image} alt={title} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
       </div>
     )}
     <div className="p-8 flex-1 flex flex-col">
@@ -292,6 +292,7 @@ export default function App() {
                 <img
                   src="/Group 1261152934.png"
                   alt="T3 Hub - Líderes do Interior"
+                  loading="lazy"
                   className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-all duration-700 p-4"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent pointer-events-none md:hidden"></div>
@@ -380,6 +381,7 @@ export default function App() {
               <img
                 src="/TAY-5746.jpg"
                 alt="Líder T3"
+                loading="lazy"
                 className="rounded-lg shadow-2xl border border-white/10 object-cover w-full h-full"
               />
             </div>
@@ -526,7 +528,7 @@ export default function App() {
       <footer className="py-12 border-t border-white/5 bg-black">
         <div className="container mx-auto px-6 text-center">
           <div className="flex items-center justify-center mb-8">
-            <img src="/Logo t3 hub.png" alt="T3 HUB" className="h-8 w-auto object-contain" />
+            <img src="/Logo t3 hub.png" alt="T3 HUB" loading="lazy" className="h-12 w-auto object-contain" />
           </div>
           <p className="text-white text-sm mb-4">© 2026 T3 Hub. Todos os direitos reservados.</p>
           <div className="flex justify-center gap-6">
