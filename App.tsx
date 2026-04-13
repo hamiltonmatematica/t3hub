@@ -15,19 +15,44 @@ import {
   ChevronRight
 } from 'lucide-react';
 
-// --- Types ---
-interface FormData {
-  nome: string;
-  empresa: string;
-  segmento: string;
-  faturamento: string;
-  cidade: string;
-  social: string;
-  motivo: string;
-  desafios: string;
-}
+// --- Helper Components ---
 
 // --- Helper Components ---
+
+const conceptImages = [
+  '/242-IMG_0721.jpg',
+  '/DSC04598.jpg',
+  '/DSC08494.jpg',
+  '/DSC09968.jpg',
+  '/TAY-5746.jpg'
+];
+
+const ConceptCarousel = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % conceptImages.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 w-full h-full overflow-hidden">
+      {conceptImages.map((src, index) => (
+        <img
+          key={src}
+          src={src}
+          alt={`Concept ${index + 1}`}
+          loading="lazy"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+          }`}
+        />
+      ))}
+    </div>
+  );
+};
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -87,7 +112,7 @@ const Navbar = () => {
 };
 
 // Fix: Changed children to be optional in SectionTitle to satisfy TypeScript's JSX requirements across all usages
-const SectionTitle = ({ children, subtitle, centered = false }: { children?: React.ReactNode, subtitle?: string, centered?: boolean }) => (
+const SectionTitle = ({ children, subtitle, centered = false }) => (
   <div className={`mb-12 ${centered ? 'text-center' : ''}`}>
     <h2 className="text-3xl md::text-5xl title-caps mb-4 leading-tight">{children}</h2>
     {subtitle && <p className="text-gold/80 text-lg max-w-2xl mx-auto">{subtitle}</p>}
@@ -95,7 +120,7 @@ const SectionTitle = ({ children, subtitle, centered = false }: { children?: Rea
   </div>
 );
 
-const PillarCard = ({ icon: Icon, title, description, details, image }: { icon: any, title: string, description: string, details: string, image?: string }) => (
+const PillarCard = ({ icon: Icon, title, description, details, image }) => (
   <div className="bg-grayDark/50 border border-gold/10 rounded-lg hover:border-gold/40 transition-all group overflow-hidden flex flex-col h-full">
     {image && (
       <div className="h-48 w-full overflow-hidden shrink-0">
@@ -116,16 +141,16 @@ const PillarCard = ({ icon: Icon, title, description, details, image }: { icon: 
 // --- Main App ---
 
 export default function App() {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState({
     nome: '', empresa: '', segmento: '', faturamento: '', cidade: '', social: '', motivo: '', desafios: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -228,13 +253,9 @@ export default function App() {
             </div>
             <div className="relative">
               <div className="aspect-square bg-gold/5 border border-gold/20 rounded-2xl overflow-hidden flex items-center justify-center relative group">
-                <video
-                  src="https://cdn.pixabay.com/video/2019/11/12/29254-375525995_large.mp4"
-                  autoPlay loop muted playsInline
-                  className="w-full h-full object-cover transition-all duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-                <div className="absolute bottom-8 left-8 right-8">
+                <ConceptCarousel />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-20 pointer-events-none"></div>
+                <div className="absolute bottom-8 left-8 right-8 z-30 pointer-events-none">
                   <p className="text-gold font-bold text-2xl uppercase italic">Direção define resultado.</p>
                 </div>
               </div>
