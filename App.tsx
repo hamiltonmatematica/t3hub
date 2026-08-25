@@ -156,15 +156,28 @@ const WhatsAppButton = () => (
 
 export default function App() {
   const [formData, setFormData] = useState({
-    nome: '', empresa: '', segmento: '', faturamento: '', cidade: '', social: '', motivo: '', desafios: ''
+    nome: '', email: '', telefone: '', empresa: '', segmento: '', faturamento: '', cidade: '', social: '', motivo: '', desafios: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const formatPhone = (value: string) => {
+    const numbers = value.replace(/\D/g, '').slice(0, 11);
+    if (numbers.length <= 2) return numbers;
+    if (numbers.length <= 6) return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
+    if (numbers.length <= 10) return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
+    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
   };
 
-  const handleSubmit = async (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    if (name === 'telefone') {
+      setFormData(prev => ({ ...prev, [name]: formatPhone(value) }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -177,12 +190,15 @@ export default function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          whatsapp: formData.telefone
+        }),
       });
 
       alert('Candidatura enviada com sucesso! Nossa equipe entrará em contato em breve.');
       setFormData({
-        nome: '', empresa: '', segmento: '', faturamento: '', cidade: '', social: '', motivo: '', desafios: ''
+        nome: '', email: '', telefone: '', empresa: '', segmento: '', faturamento: '', cidade: '', social: '', motivo: '', desafios: ''
       });
     } catch (error) {
       console.error('Erro ao enviar:', error);
@@ -493,19 +509,31 @@ export default function App() {
                   <div className="grid md:grid-cols-2 gap-4">
                     <input
                       type="text" name="nome" placeholder="Nome Completo" required
-                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all"
+                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all placeholder:text-white/40"
                       value={formData.nome} onChange={handleInputChange}
                     />
                     <input
+                      type="email" name="email" placeholder="E-mail Corporativo" required
+                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all placeholder:text-white/40"
+                      value={formData.email} onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <input
+                      type="tel" name="telefone" placeholder="WhatsApp (DDD + Número)" required
+                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all placeholder:text-white/40"
+                      value={formData.telefone} onChange={handleInputChange}
+                    />
+                    <input
                       type="text" name="empresa" placeholder="Sua Empresa" required
-                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all"
+                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all placeholder:text-white/40"
                       value={formData.empresa} onChange={handleInputChange}
                     />
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     <input
                       type="text" name="segmento" placeholder="Segmento" required
-                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all"
+                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all placeholder:text-white/40"
                       value={formData.segmento} onChange={handleInputChange}
                     />
                     <select
@@ -513,33 +541,33 @@ export default function App() {
                       className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all text-white"
                       value={formData.faturamento} onChange={handleInputChange}
                     >
-                      <option value="">Faturamento Anual</option>
-                      <option value="ate-1m">Até R$ 1M</option>
-                      <option value="1m-5m">R$ 1M a R$ 5M</option>
-                      <option value="5m-15m">R$ 5M a R$ 15M</option>
-                      <option value="acima-15m">Acima de R$ 15M</option>
+                      <option value="" className="bg-black text-white">Faturamento Anual</option>
+                      <option value="ate-1m" className="bg-black text-white">Até R$ 1M</option>
+                      <option value="1m-5m" className="bg-black text-white">R$ 1M a R$ 5M</option>
+                      <option value="5m-15m" className="bg-black text-white">R$ 5M a R$ 15M</option>
+                      <option value="acima-15m" className="bg-black text-white">Acima de R$ 15M</option>
                     </select>
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     <input
                       type="text" name="cidade" placeholder="Cidade / Estado" required
-                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all"
+                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all placeholder:text-white/40"
                       value={formData.cidade} onChange={handleInputChange}
                     />
                     <input
                       type="text" name="social" placeholder="Instagram ou Site"
-                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all"
+                      className="bg-transparent border-b border-white/20 p-3 focus:border-gold outline-none w-full transition-all placeholder:text-white/40"
                       value={formData.social} onChange={handleInputChange}
                     />
                   </div>
                   <textarea
                     name="motivo" placeholder="Por que deseja participar do T3 Hub?" rows={3}
-                    className="bg-transparent border border-white/10 p-4 rounded focus:border-gold outline-none w-full transition-all"
+                    className="bg-transparent border border-white/10 p-4 rounded focus:border-gold outline-none w-full transition-all placeholder:text-white/40"
                     value={formData.motivo} onChange={handleInputChange}
                   />
                   <textarea
                     name="desafios" placeholder="Quais são seus principais desafios hoje?" rows={3}
-                    className="bg-transparent border border-white/10 p-4 rounded focus:border-gold outline-none w-full transition-all"
+                    className="bg-transparent border border-white/10 p-4 rounded focus:border-gold outline-none w-full transition-all placeholder:text-white/40"
                     value={formData.desafios} onChange={handleInputChange}
                   />
                   <button
